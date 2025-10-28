@@ -1,0 +1,89 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+.checkout-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(10px);
+    color: #fff;
+}
+.checkout-container input, .checkout-container select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+}
+.checkout-container input:focus, .checkout-container select:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 8px rgba(255,105,180,0.5);
+}
+.btn-custom {
+    background-color: #ff69b4;
+    color: #fff;
+    border-radius: 0.6rem;
+    padding: 0.7rem 2rem;
+    font-size: 1.1rem;
+}
+.btn-custom:hover {
+    background-color: #ff1493;
+}
+#card-container { display:none; }
+</style>
+
+<div class="checkout-container">
+    <h1 class="text-center fw-bold mb-4">Checkout 🛍️</h1>
+
+    {% if cart %}
+    <form id="checkout-form" method="POST" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="text" name="city" placeholder="City" required>
+        <input type="text" name="zip" placeholder="ZIP Code" required>
+
+        <label>Payment Method</label>
+        <select id="payment_method" name="payment_method" required>
+            <option value="card">Credit/Debit Card</option>
+            <option value="cash">Cash on Delivery</option>
+        </select>
+
+        <!-- Card info container -->
+        <div id="card-container">
+            <input type="text" name="card_number" placeholder="Card Number" required>
+            <input type="text" name="card_exp" placeholder="MM/YY" required>
+            <input type="text" name="card_cvc" placeholder="CVC" required>
+        </div>
+
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-custom btn-lg">Place Order 💖</button>
+        </div>
+    </form>
+    {% else %}
+    <p class="text-center mt-5">Your cart is empty 😢</p>
+    <div class="text-center mt-3">
+        <a href="{% url 'store' %}" class="btn btn-outline-light">Continue Shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+const paymentSelect = document.getElementById('payment_method');
+const cardContainer = document.getElementById('card-container');
+
+paymentSelect.addEventListener('change', function(){
+    if(this.value === 'card'){
+        cardContainer.style.display = 'block';
+    } else {
+        cardContainer.style.display = 'none';
+    }
+});
+</script>
+
+{% endblock %}
+

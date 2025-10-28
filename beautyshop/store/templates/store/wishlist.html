@@ -1,0 +1,124 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    /* ================= Wishlist Container ================= */
+    .wishlist-container {
+        margin-top: 3rem;
+        color: #fff;
+    }
+
+    .wishlist-container h1 {
+        text-align: center;
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* ================= List Items ================= */
+    .wishlist-container .list-group-item {
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(8px);
+        border-radius: 0.7rem;
+        margin-bottom: 0.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .wishlist-container .list-group-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* ================= Buttons ================= */
+    .wishlist-container .btn-warning {
+        background-color: #ff69b4 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .wishlist-container .btn-warning:hover {
+        background-color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .wishlist-container .btn-success {
+        background-color: #28a745 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .wishlist-container .btn-success:hover {
+        background-color: #218838 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .wishlist-container .btn-outline-light {
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .wishlist-container .btn-outline-light:hover {
+        background-color: rgba(255,105,180,0.2);
+        color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* ================= Empty Wishlist ================= */
+    .empty-wishlist {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-top: 2rem;
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 768px) {
+        .wishlist-container h1 {
+            font-size: 1.8rem;
+        }
+
+        .wishlist-container .list-group-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .wishlist-container .list-group-item div {
+            margin-top: 0.5rem;
+        }
+    }
+</style>
+
+<div class="container wishlist-container">
+    <h1 class="fw-bold">Your Wishlist 💖</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if wishlist %}
+                <ul class="list-group list-group-flush">
+                    {% for item in wishlist %}
+                        <li class="list-group-item">
+                            {{ item.product.name }}
+                            <div>
+                                <a href="{% url 'product-detail' item.product.slug %}" class="btn btn-sm btn-warning me-2">View</a>
+                                <a href="{% url 'cart-add' item.product.id %}" class="btn btn-sm btn-success">Add to Cart</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty-wishlist">Your wishlist is empty 😢</p>
+                <div class="text-center mt-3">
+                    <a href="{% url 'store' %}" class="btn btn-outline-light">Continue Shopping</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

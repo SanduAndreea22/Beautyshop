@@ -1,0 +1,109 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    /* ================= Container Review ================= */
+    .review-container {
+        background: linear-gradient(135deg, #ff1493, #ff69b4, #ffb6c1);
+        background-size: 400% 400%;
+        animation: gradientAnimation 15s ease infinite;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        color: #fff;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* ================= Form Elements ================= */
+    .review-container input,
+    .review-container textarea {
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.8rem;
+        border: 1px solid #ccc;
+        outline: none;
+        width: 100%;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .review-container input:focus,
+    .review-container textarea:focus {
+        border-color: #ff69b4;
+        box-shadow: 0 0 10px rgba(255,105,180,0.5);
+        transform: scale(1.02);
+    }
+
+    /* ================= Buttons ================= */
+    .review-container .btn-dark {
+        background-color: #ff69b4;
+        color: #fff;
+        border-radius: 0.6rem;
+        padding: 0.7rem 2rem;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .review-container .btn-dark:hover {
+        background-color: #ff1493;
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+
+    /* ================= Links ================= */
+    .review-container a {
+        color: #ffd700;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .review-container a:hover {
+        color: #ff69b4;
+        transform: scale(1.05);
+        text-decoration: underline;
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 768px) {
+        .review-container {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="review-container">
+        <h2 class="fw-bold mb-4 text-center">Add Your Review 💖</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating (1-5)</label>
+                <input type="number" id="rating" name="rating" min="1" max="5" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea id="comment" name="comment" rows="4" placeholder="Write your review..." required></textarea>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-dark btn-lg px-5">Submit Review 💖</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="{% url 'product-detail' product.slug %}">Back to Product</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

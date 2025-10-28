@@ -1,0 +1,74 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+/* ================= Wishlist Button ================= */
+.btn-wishlist {
+    background-color: #fff; /* alb pentru contrast */
+    color: #ff1493 !important; /* roz închis */
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-wishlist:hover {
+    background-color: #ff1493; /* roz închis */
+    color: #fff !important;     /* alb text */
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+/* ================= Reviews ================= */
+.review-card {
+    background: rgba(255, 255, 255, 0.1); /* ușor alb transparent pentru vizibilitate */
+    padding: 1rem 1.2rem;
+    border-radius: 0.8rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+</style>
+
+<div class="container product-detail-container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+        </div>
+
+        <div class="col-md-6 product-info">
+            <h2>{{ product.name }}</h2>
+            {% if product.brand %}<p class="text-muted">Brand: {{ product.brand }}</p>{% endif %}
+            {% if product.category %}<p class="text-muted">Category: {{ product.category.name }}</p>{% endif %}
+            <p class="price">${{ product.price }}</p>
+            <p>{{ product.description }}</p>
+
+            <a href="{% url 'cart-add' product.id %}" class="btn btn-warning btn-warning-custom btn-custom mb-2">Add to Cart</a>
+            <a href="{% url 'add-wishlist' product.id %}" class="btn btn-outline-light btn-outline-custom btn-custom mb-2">
+                <i class="fa fa-heart"></i> Add to Wishlist
+            </a>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <h4>Reviews 💬</h4>
+    {% for review in reviews %}
+        <div class="review-card">
+            <strong>{{ review.user.username }}</strong> - Rating: {{ review.rating }}/5
+            <p>{{ review.comment }}</p>
+        </div>
+    {% empty %}
+        <p>No reviews yet 😢</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+
+

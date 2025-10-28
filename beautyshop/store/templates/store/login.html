@@ -1,0 +1,103 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    /* ================= Login Container ================= */
+    .login-container {
+        margin-top: 5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .login-card {
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(10px);
+        padding: 3rem 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .login-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+    }
+
+    .login-card h2 {
+        color: #fff;
+        margin-bottom: 2rem;
+    }
+
+    /* ================= Form Inputs ================= */
+    .login-card input {
+        width: 100%;
+        padding: 0.5rem 0.7rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+        margin-bottom: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .login-card input:focus {
+        border-color: #ff69b4;
+        box-shadow: 0 0 8px rgba(255,105,180,0.5);
+        transform: scale(1.02);
+    }
+
+    /* ================= Buttons ================= */
+    .login-card .btn-dark {
+        background-color: #ff69b4 !important;
+        color: #fff !important;
+        border-radius: 0.6rem;
+        padding: 0.7rem 2rem;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .login-card .btn-dark:hover {
+        background-color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    /* ================= Links ================= */
+    .login-card a {
+        color: #ffb6c1;
+        transition: all 0.3s ease;
+    }
+
+    .login-card a:hover {
+        color: #ff1493;
+        text-decoration: underline;
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 768px) {
+        .login-card {
+            padding: 2rem 1.5rem;
+        }
+    }
+</style>
+
+<div class="container login-container">
+    <div class="login-card">
+        <h2 class="fw-bold text-center">Login 💖</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-dark btn-lg px-5">Login 💖</button>
+            </div>
+        </form>
+
+        <p class="text-center text-white mt-3">
+            Don't have an account? <a href="{% url 'register' %}">Register</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

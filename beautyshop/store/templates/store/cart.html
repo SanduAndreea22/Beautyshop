@@ -1,0 +1,181 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    /* ================= Cart Container ================= */
+    .cart-container {
+        padding: 2rem;
+        border-radius: 1rem;
+        background-color: #2c0f2f; /* roz închis */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: #fff;
+    }
+
+    .cart-container:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+    }
+
+    /* ================= Table Styling ================= */
+    .cart-container table {
+        width: 100%;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .cart-container th {
+        background-color: rgba(255,105,180,0.3);
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .cart-container td {
+        vertical-align: middle !important;
+        color: #ffb6c1;  /* text roz deschis */
+    }
+
+    .cart-container tbody tr:hover {
+        background-color: rgba(255,105,180,0.15);
+    }
+
+    /* ================= Form Inputs ================= */
+    .cart-container input[type="number"] {
+        text-align: center;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+        transition: all 0.3s ease;
+    }
+
+    .cart-container input[type="number"]:focus {
+        border-color: #ff69b4;
+        box-shadow: 0 0 8px rgba(255,105,180,0.5);
+        transform: scale(1.05);
+    }
+
+    /* ================= Buttons ================= */
+    .cart-container .btn-dark {
+        background-color: #ff69b4 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .cart-container .btn-dark:hover {
+        background-color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .cart-container .btn-warning {
+        background-color: #ff69b4 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+    }
+
+    .cart-container .btn-warning:hover {
+        background-color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .cart-container .btn-danger {
+        background-color: #dc3545 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+    }
+
+    .cart-container .btn-danger:hover {
+        background-color: #b3002d !important;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* ================= Total & Checkout ================= */
+    .cart-total {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ffb6c1;
+        margin-bottom: 1rem;
+    }
+
+    /* ================= Empty Cart Message ================= */
+    .empty-cart {
+        font-size: 1.2rem;
+        margin-top: 3rem;
+        color: #fff;
+    }
+
+    .empty-cart a.btn {
+        margin-top: 1rem;
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 768px) {
+        .cart-container {
+            padding: 1rem;
+        }
+
+        .cart-container input[type="number"] {
+            width: 50px;
+        }
+
+        .cart-total {
+            text-align: center;
+        }
+
+        .text-end {
+            text-align: center !important;
+        }
+    }
+</style>
+
+<div class="container cart-container text-white">
+    <h1 class="fw-bold mb-4 text-center">Your Cart 🛒</h1>
+
+    {% if cart %}
+    <div class="table-responsive p-4 rounded">
+        <table class="table table-striped text-white align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>
+                        <form action="{% url 'cart-update' item.id %}" method="POST" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <input type="number" name="qty" value="{{ item.quantity }}" min="1" class="form-control w-25 me-2">
+                            <button type="submit" class="btn btn-sm btn-warning">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ item.price|floatformat:2 }}</td>
+                    <td>${{ item.total_price|floatformat:2 }}</td>
+                    <td>
+                        <a href="{% url 'cart-delete' item.id %}" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-end mt-4">
+        <h4 class="cart-total">Total: ${{ total|floatformat:2 }}</h4>
+        <a href="{% url 'checkout' %}" class="btn btn-dark btn-lg mt-2">Proceed to Checkout</a>
+    </div>
+
+    {% else %}
+    <p class="empty-cart text-center mt-5">Your cart is empty 😢</p>
+    <div class="text-center mt-3">
+        <a href="{% url 'store' %}" class="btn btn-outline-light">Continue Shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

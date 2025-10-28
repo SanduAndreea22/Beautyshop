@@ -1,0 +1,151 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    /* ================= Home Page Header ================= */
+    .home-header {
+        text-align: center;
+        color: #fff;
+        margin-top: 3rem;
+    }
+
+    .home-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .home-header p {
+        font-size: 1.2rem;
+    }
+
+    /* ================= Product Cards ================= */
+    .card {
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-title {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        color: #ffb6c1;
+        margin-bottom: 1rem;
+    }
+
+    /* ================= Buttons ================= */
+    .card .btn-dark {
+        background-color: #ff69b4 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        margin-bottom: 0.3rem;
+    }
+
+    .card .btn-dark:hover {
+        background-color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .card .btn-warning {
+        background-color: #ff69b4 !important;
+        color: #fff !important;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        margin-bottom: 0.3rem;
+    }
+
+    .card .btn-warning:hover {
+        background-color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .card .btn-outline-light {
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        margin-bottom: 0.3rem;
+    }
+
+    .card .btn-outline-light:hover {
+        background-color: rgba(255,105,180,0.2);
+        color: #ff1493 !important;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* ================= Empty Products ================= */
+    .empty-products {
+        text-align: center;
+        color: #fff;
+        margin-top: 2rem;
+        font-size: 1.2rem;
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 768px) {
+        .card img {
+            height: 180px;
+        }
+
+        .home-header h1 {
+            font-size: 2rem;
+        }
+
+        .home-header p {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="home-header">
+    <h1 class="fw-bold">Welcome to Beauty Shop 💋</h1>
+    <p class="lead">Discover your favorite beauty products with a touch of elegance.</p>
+</div>
+
+<div class="row mt-5">
+    {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">${{ product.price }}</p>
+
+                    <a href="{% url 'product-detail' product.slug %}" class="btn btn-dark mb-2">View Details</a>
+                    <a href="{% url 'cart-add' product.id %}" class="btn btn-warning mb-2">Add to Cart</a>
+                    <a href="{% url 'add-wishlist' product.id %}" class="btn btn-outline-light">
+                        <i class="fa fa-heart"></i> Add to Wishlist
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="empty-products">No products available 😢</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
